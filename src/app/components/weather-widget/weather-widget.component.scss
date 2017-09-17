@@ -1,0 +1,28 @@
+.container {
+  text-align: center;
+  margin: 0 auto;
+  min-width: 200px;
+  max-width: 700px;
+  width: 100%;
+  h1, h3 {
+    font-weight: 400;
+  }
+
+  md-form-field {
+    width: 80%;
+  }
+
+  md-progress-bar {
+    margin-bottom: 2em;
+  }
+
+  md-expansion-panel {
+    width: 100%;
+    margin-bottom: 2em;
+    md-expansion-panel-header {
+      span {
+        padding-top: 1em;
+      }
+    }
+  }
+}
