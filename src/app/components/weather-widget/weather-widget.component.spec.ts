@@ -1,6 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MdInputModule, MdButtonModule, MdExpansionModule, MdProgressBarModule, MdPaginatorModule } from '@angular/material';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { WeatherWidgetComponent } from './weather-widget.component';
+import { StorageService } from './../../services/storage.service';
+import { WeatherService } from './../../services/weather.service';
+import { ApiService } from './../../services/api.service';
 
 describe('WeatherWidgetComponent', () => {
   let component: WeatherWidgetComponent;
@@ -8,9 +15,28 @@ describe('WeatherWidgetComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WeatherWidgetComponent ]
+      imports: [
+        FormsModule, ReactiveFormsModule,
+        MdInputModule, MdButtonModule, MdExpansionModule, MdProgressBarModule, MdPaginatorModule,
+        BrowserAnimationsModule, NoopAnimationsModule
+      ],
+      declarations: [
+        WeatherWidgetComponent
+      ],
+      providers: [
+        StorageService,
+        //WeatherService,
+        //ApiService
+        //{provide: StorageService, useValue: {}},
+        {provide: WeatherService, useValue: {}},
+        {provide: ApiService, useValue: {}}
+      ]
     })
-    .compileComponents();
+    .compileComponents().then(() => {
+      const fixture = TestBed.createComponent(WeatherWidgetComponent);
+      const app = fixture.debugElement.componentInstance;
+      expect(app).toBeTruthy();
+    });
   }));
 
   beforeEach(() => {
