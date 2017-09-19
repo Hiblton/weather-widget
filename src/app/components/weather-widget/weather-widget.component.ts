@@ -17,7 +17,7 @@ export class WeatherWidgetComponent implements OnInit {
   private pageIndex: number = 0;
   private pageSize: number = 5;
 
-  private location: any = {};
+  private localCity: any = {};
   private cities: Array<any> = [];
   private displayedCities: Array<any> = [];
 
@@ -29,8 +29,6 @@ export class WeatherWidgetComponent implements OnInit {
     this.createForm();
     this.getSavedData();
     this.getLocalWeather();
-    //todo subscribe on cities array
-    //todo handlers: duplicate ids of city, city is not found, display validation errors
   }
 
   createForm() {
@@ -43,6 +41,7 @@ export class WeatherWidgetComponent implements OnInit {
     this.cities = this.storageService.get('cities') || [];
     if (this.cities && this.cities.length) {
       this.cities.map(item => {
+        //update weather for all saved cities
         this.weatherService.getWeatherByCityID(item.id).subscribe(
           response => {
             item = response;
@@ -51,9 +50,14 @@ export class WeatherWidgetComponent implements OnInit {
           }
         )
       });
-      this.storageService.set('cities', this.cities);
+      this.setSavedData();
       this.updateDisplayedCities();
     }
+  }
+
+  setSavedData() {
+    let cities = this.cities.filter(item => item.saved);
+    this.storageService.set('cities', cities);
   }
 
   onSubmitSearchForm() {
@@ -61,10 +65,13 @@ export class WeatherWidgetComponent implements OnInit {
       this.requesting = true;
       this.weatherService.getWeatherByCityName(this.searchForm.value.searchField).subscribe(
         response => {
-          this.requesting = false;
+          //prevent duplicate of cities: city is moving to beginning of list
+          this.cities = this.cities.filter(item => item.id !== response.id);
           this.cities.unshift(response);
-          this.updateDisplayedCities();
+
+          this.requesting = false;
           this.searchForm.reset();
+          this.updateDisplayedCities();
         },
         error => {
           this.requesting = false;
@@ -76,15 +83,13 @@ export class WeatherWidgetComponent implements OnInit {
 
   addCity(city: any) {
     city.saved = true;
-    let cities = this.cities.filter(item => item.saved);
-    this.storageService.set('cities', cities);
+    this.setSavedData();
     this.updateDisplayedCities();
   }
 
   removeCity(id: number) {
     this.cities = this.cities.filter(item => item.id !== id);
-    let cities = this.cities.filter(item => item.saved);
-    this.storageService.set('cities', cities);
+    this.setSavedData();
     this.updateDisplayedCities();
   }
 
@@ -93,7 +98,8 @@ export class WeatherWidgetComponent implements OnInit {
       pos => {
         this.weatherService.getWeatherByCoords(pos.coords.latitude, pos.coords.longitude).subscribe(
           response => {
-            this.location = response;
+            this.localCity = response;
+            this.localCity.local = true;
           }
         )
       }, err => {
@@ -109,6 +115,11 @@ export class WeatherWidgetComponent implements OnInit {
   updateDisplayedCities() {
     let startIndex = this.pageIndex * this.pageSize;
     let endIndex = this.pageIndex * this.pageSize + this.pageSize;
+    //to prevent empty page
+    if (endIndex > this.pageSize && endIndex > this.cities.length) {
+      this.pageIndex--;
+      this.updateDisplayedCities();
+    }
     this.displayedCities = this.cities.slice(startIndex, endIndex);
   }
 

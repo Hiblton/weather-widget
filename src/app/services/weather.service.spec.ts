@@ -1,7 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { WeatherService } from './weather.service';
-import { ApiService } from "./api.service";
+import { ApiService } from './api.service';
 
 describe('WeatherService', () => {
   beforeEach(() => {

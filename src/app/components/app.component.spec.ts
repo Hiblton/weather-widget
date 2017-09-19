@@ -4,7 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MdInputModule, MdButtonModule, MdExpansionModule, MdProgressBarModule, MdPaginatorModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
-import { WeatherWidgetComponent } from "./weather-widget/weather-widget.component";
+import { WeatherWidgetComponent } from './weather-widget/weather-widget.component';
+import { CityCardComponent } from './city-card/city-card.component';
 import { StorageService } from './../services/storage.service';
 import { WeatherService } from './../services/weather.service';
 
@@ -17,7 +18,8 @@ describe('AppComponent', () => {
       ],
       declarations: [
         AppComponent,
-        WeatherWidgetComponent
+        WeatherWidgetComponent,
+        CityCardComponent
       ],
       providers: [
         {provide: StorageService, useValue: {}},

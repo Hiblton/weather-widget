@@ -5,6 +5,7 @@ import { MdInputModule, MdButtonModule, MdExpansionModule, MdProgressBarModule, 
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { WeatherWidgetComponent } from './weather-widget.component';
+import { CityCardComponent } from '../city-card/city-card.component';
 import { StorageService } from './../../services/storage.service';
 import { WeatherService } from './../../services/weather.service';
 import { ApiService } from './../../services/api.service';
@@ -21,7 +22,8 @@ describe('WeatherWidgetComponent', () => {
         BrowserAnimationsModule, NoopAnimationsModule
       ],
       declarations: [
-        WeatherWidgetComponent
+        WeatherWidgetComponent,
+        CityCardComponent
       ],
       providers: [
         StorageService,
@@ -32,7 +34,7 @@ describe('WeatherWidgetComponent', () => {
         {provide: ApiService, useValue: {}}
       ]
     })
-    .compileComponents().then(() => {
+      .compileComponents().then(() => {
       const fixture = TestBed.createComponent(WeatherWidgetComponent);
       const app = fixture.debugElement.componentInstance;
       expect(app).toBeTruthy();

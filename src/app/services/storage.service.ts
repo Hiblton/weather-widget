@@ -10,11 +10,11 @@ export class StorageService {
     localStorage.setItem(key, value);
   }
 
-  get<T>(key: string): any {
+  get(key: string): any {
     let value: string = localStorage.getItem(key);
 
     if (value && value != 'undefined' && value != 'null') {
-      return <T>JSON.parse(value);
+      return JSON.parse(value);
     }
 
     return null;

@@ -11,11 +11,13 @@ import { WeatherWidgetComponent } from './components/weather-widget/weather-widg
 import { ApiService } from './services/api.service';
 import { StorageService } from './services/storage.service';
 import { WeatherService } from './services/weather.service';
+import { CityCardComponent } from './components/city-card/city-card.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    WeatherWidgetComponent
+    WeatherWidgetComponent,
+    CityCardComponent
   ],
   imports: [
     BrowserModule,

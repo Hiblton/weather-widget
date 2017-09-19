@@ -1,25 +1,8 @@
 <section class="container">
-
   <h1>Test Weather Widget!</h1>
 
-  <md-expansion-panel *ngIf="location.id">
-    <md-expansion-panel-header>
-      <md-panel-title>
-        <span>Local Weather: {{ location.name }}</span>
-        <img src="http://openweathermap.org/img/w/{{ location.weather[0].icon }}.png" alt="{{ location.weather[0].main }}" />
-      </md-panel-title>
-      <md-panel-description>
-        <span>
-          temp: {{ location.main.temp }}&deg;C /
-          humidity: {{ location.main.humidity }}% /
-          weather: {{ location.weather[0].description }}
-        </span>
-      </md-panel-description>
-    </md-expansion-panel-header>
-
-    Here could be forecast!!!
-
-  </md-expansion-panel>
+  <h3 *ngIf="localCity.local">Your current location and weather around you!</h3>
+  <app-city-card [city]="localCity"></app-city-card>
 
   <form novalidate [formGroup]="searchForm" (ngSubmit)="onSubmitSearchForm()">
     <md-form-field>
@@ -31,7 +14,6 @@
     </md-form-field>
     <button type="submit" md-raised-button color="accent" [disabled]="requesting">Search!</button>
   </form>
-
   <md-progress-bar *ngIf="requesting" mode="indeterminate"></md-progress-bar>
 
   <h3 [ngPlural]="cities.length">
@@ -40,34 +22,15 @@
     <ng-template ngPluralCase="other">{{ cities.length }} cities in the list.</ng-template>
   </h3>
 
-  <md-expansion-panel *ngFor="let item of displayedCities" [expanded]="!item.saved">
-    <md-expansion-panel-header>
-      <md-panel-title>
-        <span>City: {{ item.name }}</span>
-        <img src="http://openweathermap.org/img/w/{{ item.weather[0].icon }}.png" alt="{{ item.weather[0].main }}" />
-      </md-panel-title>
-      <md-panel-description>
-        <span>
-          temp: {{ item.main.temp }}&deg;C /
-          humidity: {{ item.main.humidity }}% /
-          weather: {{ item.weather[0].description }}
-        </span>
-      </md-panel-description>
-    </md-expansion-panel-header>
-
-    Here could be forecast!!!
-
-    <md-action-row>
-      <button md-button color="warn" *ngIf="!item.saved" (click)="addCity(item)">Add</button>
-      <button md-button disabled *ngIf="item.saved">Added</button>
-      <button md-button color="primary" (click)="removeCity(item.id)">Remove</button>
-    </md-action-row>
-  </md-expansion-panel>
+  <app-city-card *ngFor="let city of displayedCities"
+                 [city]="city"
+                 (onAddCity)="addCity($event)"
+                 (onRemoveCity)="removeCity($event)">
+  </app-city-card>
 
   <md-paginator *ngIf="cities.length > pageSize"
                 [length]="cities.length"
                 [pageSize]="pageSize"
                 (page)="onPaginateChange($event)">
   </md-paginator>
-
 </section>

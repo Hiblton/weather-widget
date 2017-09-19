@@ -1,0 +1,23 @@
+<md-expansion-panel *ngIf="city.weather" [expanded]="!city.saved && !city.local">
+  <md-expansion-panel-header>
+    <md-panel-title>
+      <span>City: {{ city.name }}</span>
+      <img src="http://openweathermap.org/img/w/{{ city.weather[0].icon }}.png" alt="{{ city.weather[0].main }}"/>
+    </md-panel-title>
+    <md-panel-description>
+        <span>
+          temp: {{ city.main.temp }}&deg;C /
+          humidity: {{ city.main.humidity }}% /
+          weather: {{ city.weather[0].description }}
+        </span>
+    </md-panel-description>
+  </md-expansion-panel-header>
+
+  Here could be forecast!!!
+
+  <md-action-row *ngIf="!city.local">
+    <button md-button color="warn" *ngIf="!city.saved" (click)="addCity(city)">Add</button>
+    <button md-button disabled *ngIf="city.saved">Added</button>
+    <button md-button color="primary" (click)="removeCity(city.id)">Remove</button>
+  </md-action-row>
+</md-expansion-panel>
